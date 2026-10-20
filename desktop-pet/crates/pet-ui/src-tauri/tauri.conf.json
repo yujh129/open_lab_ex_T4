@@ -19,7 +19,8 @@
         "skipTaskbar": true,
         "resizable": false,
         "focus": false,
-        "shadow": false
+        "shadow": false,
+        "backgroundColor": "#00000000"
       }
     ],
     "security": {
