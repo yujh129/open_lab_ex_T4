@@ -1,0 +1,27 @@
+{
+  "productName": "DesktopPet",
+  "version": "0.1.0",
+  "identifier": "com.example.desktop-pet",
+  "build": {
+    "frontendDist": "../../frontend/dist",
+    "devUrl": "http://localhost:5173"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "width": 240,
+        "height": 240,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "decorations": false,
+        "skipTaskbar": true,
+        "resizable": false,
+        "focus": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
+}

@@ -1,0 +1,11 @@
+[package]
+name = "pet-voice"
+version = { workspace = true }
+edition = { workspace = true }
+
+[dependencies]
+pet-core = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

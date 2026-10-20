@@ -1,0 +1,22 @@
+[package]
+name = "pet-cli"
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+rust-version = { workspace = true }
+
+[[bin]]
+name = "pet-cli"
+path = "src/main.rs"
+
+[dependencies]
+# 只依赖 pet-core 的契约层；启用 mocks 拿到 InMemoryMemoryStore / MockChatProvider。
+pet-core = { workspace = true, features = ["mocks"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+chrono = { workspace = true }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1"

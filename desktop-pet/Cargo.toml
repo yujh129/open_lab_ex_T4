@@ -1,0 +1,40 @@
+[workspace]
+members = [
+    "crates/pet-core",
+    "crates/pet-ai",
+    "crates/pet-memory",
+    "crates/pet-voice",
+    "crates/pet-ui",
+    "apps/pet-app",
+    "apps/pet-cli"
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.78"
+
+[workspace.dependencies]
+pet-core   = { path = "crates/pet-core" }
+pet-ai     = { path = "crates/pet-ai" }
+pet-memory = { path = "crates/pet-memory" }
+pet-voice  = { path = "crates/pet-voice" }
+pet-ui     = { path = "crates/pet-ui" }
+
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "process", "fs"] }
+futures-util = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+reqwest = { version = "0.12", features = ["json", "stream", "rustls-tls"], default-features = false }
+rusqlite = { version = "0.32", features = ["bundled", "chrono", "serde_json"] }
+tauri = { version = "2", features = [] }
+tauri-build = { version = "2", features = [] }

@@ -1,0 +1,19 @@
+[package]
+name = "pet-app"
+version = { workspace = true }
+edition = { workspace = true }
+
+[[bin]]
+name = "desktop-pet"
+path = "src/main.rs"
+
+[dependencies]
+pet-core   = { workspace = true }
+pet-ui     = { workspace = true }
+pet-ai     = { workspace = true }
+pet-memory = { workspace = true }
+pet-voice  = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }

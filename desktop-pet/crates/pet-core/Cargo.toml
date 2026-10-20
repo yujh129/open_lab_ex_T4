@@ -1,0 +1,19 @@
+[package]
+name = "pet-core"
+version = { workspace = true }
+edition = { workspace = true }
+
+[features]
+default = []
+# 启用后暴露 `mocks` 模块，供 pet-ui / pet-app 在无 llama-server 时开发。
+mocks = []
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
