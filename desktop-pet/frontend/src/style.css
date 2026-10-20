@@ -1,0 +1,156 @@
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent !important;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- 宠物本体 ---------- */
+.pet {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  width: 200px;
+  height: 200px;
+  transform: translateX(-50%);
+  cursor: grab;
+}
+
+.pet:active {
+  cursor: grabbing;
+}
+
+.pet-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffd59a, #ff8a5c);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.mood-idle .pet-body {
+  background: radial-gradient(circle at 35% 30%, #ffe0b2, #ff9f6b);
+}
+
+.mood-happy .pet-body {
+  background: radial-gradient(circle at 35% 30%, #fff3a8, #ffb347);
+  transform: scale(1.06);
+}
+
+.mood-talking .pet-body {
+  background: radial-gradient(circle at 35% 30%, #c8f7c5, #6fcf97);
+  animation: breathe 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.08); }
+}
+
+.pet-eye {
+  position: absolute;
+  top: 70px;
+  width: 18px;
+  height: 24px;
+  background: #2b2b2b;
+  border-radius: 50%;
+}
+
+.pet-eye.left  { left: 58px; }
+.pet-eye.right { right: 58px; }
+
+.pet-mouth {
+  position: absolute;
+  left: 50%;
+  top: 118px;
+  width: 36px;
+  height: 16px;
+  transform: translateX(-50%);
+  background: #2b2b2b;
+  border-radius: 0 0 18px 18px;
+}
+
+.mood-talking .pet-mouth {
+  animation: talk 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes talk {
+  from { height: 10px; }
+  to   { height: 26px; }
+}
+
+/* ---------- 输入框：宠物正上方 ---------- */
+.chat-input {
+  position: absolute;
+  left: 50%;
+  bottom: 236px;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(30, 30, 30, 0.55);
+  color: #fff;
+  font: 13px/32px system-ui, -apple-system, "Segoe UI", sans-serif;
+  outline: none;
+  backdrop-filter: blur(6px);
+  transition: background 0.15s ease;
+}
+
+.chat-input:focus {
+  background: rgba(30, 30, 30, 0.85);
+}
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- 气泡 ---------- */
+.bubble {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  max-width: 280px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f1f1f;
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.18s ease, background 0.15s ease;
+}
+
+.bubble.hidden {
+  opacity: 0;
+}
+
+.bubble.error {
+  background: rgba(255, 220, 220, 0.95);
+  color: #8a1c1c;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 2px;
+}

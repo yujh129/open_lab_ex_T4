@@ -4,15 +4,23 @@ version = { workspace = true }
 edition = { workspace = true }
 
 [lib]
+name = "pet_ui"
 crate-type = ["rlib"]
 
+[[bin]]
+name = "pet-ui"
+path = "src/main.rs"
+
 [dependencies]
-pet-core = { workspace = true }
+pet-core = { workspace = true, features = ["mocks"] }
 tauri = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }
+
+[dev-dependencies]
+async-trait = { workspace = true }
 
 [build-dependencies]
 tauri-build = { workspace = true }

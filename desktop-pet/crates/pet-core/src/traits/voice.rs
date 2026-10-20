@@ -12,4 +12,9 @@ pub trait SpeechSink: Send + Sync {
 
     /// 停止当前播报并清空队列。
     fn stop(&self) -> PetResult<()>;
+
+    /// 返回当前是否正在播报。默认 `false`，便于同步实现按需覆盖。
+    fn is_speaking(&self) -> bool {
+        false
+    }
 }

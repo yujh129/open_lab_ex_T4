@@ -8,7 +8,8 @@ name = "desktop-pet"
 path = "src/main.rs"
 
 [dependencies]
-pet-core   = { workspace = true }
+# 阶段 2 只有 mocks 可用，故启用 mocks；阶段 3 接入真实实现后去掉。
+pet-core   = { workspace = true, features = ["mocks"] }
 pet-ui     = { workspace = true }
 pet-ai     = { workspace = true }
 pet-memory = { workspace = true }

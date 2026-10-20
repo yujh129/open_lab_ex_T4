@@ -8,8 +8,8 @@ use async_trait::async_trait;
 use chrono::{DateTime, Utc};
 
 use crate::{
-    ChatMessage, ChatProvider, MemoryEntry, MemoryId, MemoryStore, PetResult, Reminder,
-    ReminderId, ReminderScheduler, Role, SpeechSink,
+    ChatMessage, ChatProvider, MemoryEntry, MemoryId, MemoryStore, Mood, PetResult, PetState,
+    PetStateStore, Position, Reminder, ReminderId, ReminderScheduler, Role, SpeechSink,
 };
 
 /// 可编程的对话引擎 Mock。
@@ -180,6 +180,10 @@ impl SpeechSink for RecordingSpeechSink {
         *self.speaking.lock().unwrap() = false;
         Ok(())
     }
+
+    fn is_speaking(&self) -> bool {
+        *self.speaking.lock().unwrap()
+    }
 }
 
 /// 内存版 [`ReminderScheduler`]。
@@ -235,6 +239,45 @@ impl ReminderScheduler for InMemoryReminderScheduler {
             }
         }
         Ok(due)
+    }
+}
+
+/// 内存版 [`PetStateStore`]。
+pub struct InMemoryPetStateStore {
+    state: Mutex<PetState>,
+}
+
+impl InMemoryPetStateStore {
+    /// 创建初始为 `Neutral / 满精力 / 原点` 的存储。
+    pub fn new() -> Self {
+        Self {
+            state: Mutex::new(PetState {
+                mood: Mood::Neutral,
+                position: Position::default(),
+                energy: 1.0,
+                last_interaction_at: Utc::now(),
+            }),
+        }
+    }
+}
+
+impl Default for InMemoryPetStateStore {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl PetStateStore for InMemoryPetStateStore {
+    fn current(&self) -> PetState {
+        self.state.lock().unwrap().clone()
+    }
+
+    fn on_interaction(&self) {
+        let mut s = self.state.lock().unwrap();
+        s.last_interaction_at = Utc::now();
+        // 交互后精力略降，情绪切到 Happy
+        s.energy = (s.energy - 0.02).clamp(0.0, 1.0);
+        s.mood = Mood::Happy;
     }
 }
 

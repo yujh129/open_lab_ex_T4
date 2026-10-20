@@ -4,7 +4,7 @@ members = [
     "crates/pet-ai",
     "crates/pet-memory",
     "crates/pet-voice",
-    "crates/pet-ui",
+    "crates/pet-ui/src-tauri",
     "apps/pet-app",
     "apps/pet-cli"
 ]
@@ -21,7 +21,7 @@ pet-core   = { path = "crates/pet-core" }
 pet-ai     = { path = "crates/pet-ai" }
 pet-memory = { path = "crates/pet-memory" }
 pet-voice  = { path = "crates/pet-voice" }
-pet-ui     = { path = "crates/pet-ui" }
+pet-ui     = { path = "crates/pet-ui/src-tauri" }
 
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "process", "fs"] }
 futures-util = "0.3"

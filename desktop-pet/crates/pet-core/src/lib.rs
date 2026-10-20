@@ -18,4 +18,4 @@ pub use domain::{
     ReminderId, Role,
 };
 pub use error::{PetError, PetResult};
-pub use traits::{ChatProvider, MemoryStore, ReminderScheduler, SpeechSink};
+pub use traits::{ChatProvider, MemoryStore, PetStateStore, ReminderScheduler, SpeechSink};

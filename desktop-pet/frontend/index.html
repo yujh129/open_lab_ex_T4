@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desktop Pet</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="bubble" class="bubble hidden" aria-live="polite"></div>
+
+  <input
+    id="chat-input"
+    class="chat-input"
+    type="text"
+    placeholder="说点什么，回车发送…"
+    autocomplete="off"
+    spellcheck="false"
+  />
+
+  <div id="pet" class="pet mood-idle" title="拖拽我">
+    <div class="pet-body"></div>
+    <div class="pet-eye left"></div>
+    <div class="pet-eye right"></div>
+    <div class="pet-mouth"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
