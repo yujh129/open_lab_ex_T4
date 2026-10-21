@@ -21,7 +21,7 @@ async function bootstrap() {
     }
   }
 
-  /* ---------- 2. 精确联合区域检测 ---------- */
+  /* ---------- 2. 精确联合区域检测（宠物 + 输入框 + 缝隙） ---------- */
   window.addEventListener("mousemove", (e) => {
     if (isClickThrough) return;
 
@@ -36,7 +36,7 @@ async function bootstrap() {
       e.clientX >= inputRect.left && e.clientX <= inputRect.right &&
       e.clientY >= inputRect.top && e.clientY <= inputRect.bottom;
 
-    // 宠物与输入框之间的透明间隙
+    // 使用 inputRect.bottom 到 petRect.top 作为判断间隙
     const inGap =
       e.clientX >= Math.min(petRect.left, inputRect.left) &&
       e.clientX <= Math.max(petRect.right, inputRect.right) &&
@@ -65,6 +65,7 @@ async function bootstrap() {
         document.body.classList.remove("click-through");
       }
       updateInputVisibility();
+      console.log("Click-through mode:", isClickThrough);
     }
   });
 
@@ -105,29 +106,74 @@ async function bootstrap() {
     }
   });
 
-  /* ---------- 6. 渲染逻辑 ---------- */
+  /* ---------- 6. 状态与气泡渲染（含流式打字机效果） ---------- */
   function applyMood(mood) {
     pet.classList.remove("mood-idle", "mood-happy", "mood-talking");
     pet.classList.add(`mood-${mood}`);
+
+    // 如果有三态图片，可以放开以下注释
     // const img = document.getElementById("pet-img");
     // img.src = `/pet/${mood}.png`;
   }
 
   let hideTimer = null;
-  function showBubble(text, isError) {
+  let currentChatText = "";
+
+  function showBubble(text, isError, autoHide = true) {
     bubble.textContent = text;
     bubble.classList.toggle("error", !!isError);
     bubble.classList.remove("hidden");
+
     if (hideTimer) clearTimeout(hideTimer);
-    const ms = Math.min(8000, Math.max(2500, text.length * 120));
-    hideTimer = setTimeout(() => bubble.classList.add("hidden"), ms);
+    if (autoHide) {
+      const ms = Math.min(8000, Math.max(2500, text.length * 120));
+      hideTimer = setTimeout(() => bubble.classList.add("hidden"), ms);
+    }
   }
 
+  // 基础状态监听
   await listen("pet://talking", (e) => applyMood(e.payload ? "talking" : "idle"));
   await listen("pet://state", (e) => applyMood(e.payload.mood));
-  await listen("pet://speech", (e) => showBubble(String(e.payload), false));
-  await listen("pet://chat_error", (e) => showBubble(String(e.payload), true));
 
+  // 聊天开始：清空气泡，准备接收流式数据
+  await listen("pet://chat_start", () => {
+    currentChatText = "";
+    showBubble("", false, false);
+  });
+
+  // 接收流式 token：实时更新气泡文字，不自动消失
+  await listen("pet://chat_token", (e) => {
+    currentChatText += String(e.payload);
+    showBubble(currentChatText, false, false);
+  });
+
+  // 完整回复到达（流式结束），设定计时器自动隐藏气泡
+  await listen("pet://speech", (e) => {
+    const finalText = String(e.payload);
+    if (!currentChatText) {
+      // 如果没有触发流式，直接显示完整文本
+      showBubble(finalText, false, true);
+    } else {
+      // 流式结束，复用当前气泡，设定自动隐藏
+      const ms = Math.min(8000, Math.max(2500, finalText.length * 120));
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => bubble.classList.add("hidden"), ms);
+    }
+  });
+
+  // 错误显示
+  await listen("pet://chat_error", (e) => {
+    const msg = String(e.payload);
+    // 如果是 mock 模式提示，显示 6 秒
+    if (msg.includes("mock 模式")) {
+      showBubble(msg, true, false);
+      hideTimer = setTimeout(() => bubble.classList.add("hidden"), 6000);
+    } else {
+      showBubble(msg, true, true);
+    }
+  });
+
+  /* ---------- 7. 首次拉取状态 ---------- */
   const initial = await invoke("get_state");
   applyMood(initial.mood);
 }

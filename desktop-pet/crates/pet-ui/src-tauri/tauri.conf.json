@@ -9,19 +9,19 @@
   },
   "app": {
     "windows": [
-          {
-            "label": "main",
-            "width": 320,
-            "height": 420,
-            "transparent": true,
-            "decorations": false,
-            "alwaysOnTop": true,
-            "skipTaskbar": true,
-            "resizable": false,
-            "focus": true,
-            "shadow": false
-          }
-        ],
+      {
+        "label": "main",
+        "width": 320,
+        "height": 460,
+        "transparent": true,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "resizable": false,
+        "focus": true,
+        "shadow": false
+      }
+    ],
     "security": {
       "csp": null
     }
