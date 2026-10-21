@@ -7,24 +7,25 @@
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
+  <!-- 气泡 -->
   <div id="bubble" class="bubble hidden" aria-live="polite"></div>
 
+  <!-- 聊天输入框：默认隐藏 -->
   <input
     id="chat-input"
-    class="chat-input"
+    class="chat-input hidden"
     type="text"
     placeholder="说点什么，回车发送…"
     autocomplete="off"
     spellcheck="false"
   />
 
+  <!-- 宠物本体：包含图片 -->
   <div id="pet" class="pet mood-idle" title="拖拽我">
-    <div class="pet-body"></div>
-    <div class="pet-eye left"></div>
-    <div class="pet-eye right"></div>
-    <div class="pet-mouth"></div>
+    <img id="pet-img" src="/pet/idle.png" alt="pet" draggable="false" />
   </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>
+

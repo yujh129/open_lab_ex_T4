@@ -29,91 +29,58 @@ body {
   cursor: grabbing;
 }
 
-.pet-body {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffd59a, #ff8a5c);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s ease, background 0.25s ease;
+/* 图片自适应容器 */
+.pet img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* 让事件穿透到 .pet div 上 */
+  transition: transform 0.25s ease;
 }
 
-.mood-idle .pet-body {
-  background: radial-gradient(circle at 35% 30%, #ffe0b2, #ff9f6b);
-}
-
-.mood-happy .pet-body {
-  background: radial-gradient(circle at 35% 30%, #fff3a8, #ffb347);
+/* 三态动效（只对图片做缩放） */
+.mood-happy img {
   transform: scale(1.06);
 }
-
-.mood-talking .pet-body {
-  background: radial-gradient(circle at 35% 30%, #c8f7c5, #6fcf97);
+.mood-talking img {
   animation: breathe 0.9s ease-in-out infinite alternate;
 }
-
 @keyframes breathe {
   from { transform: scale(1.0); }
   to   { transform: scale(1.08); }
 }
 
-.pet-eye {
-  position: absolute;
-  top: 70px;
-  width: 18px;
-  height: 24px;
-  background: #2b2b2b;
-  border-radius: 50%;
-}
-
-.pet-eye.left  { left: 58px; }
-.pet-eye.right { right: 58px; }
-
-.pet-mouth {
-  position: absolute;
-  left: 50%;
-  top: 118px;
-  width: 36px;
-  height: 16px;
-  transform: translateX(-50%);
-  background: #2b2b2b;
-  border-radius: 0 0 18px 18px;
-}
-
-.mood-talking .pet-mouth {
-  animation: talk 0.35s ease-in-out infinite alternate;
-}
-
-@keyframes talk {
-  from { height: 10px; }
-  to   { height: 26px; }
-}
-
-/* ---------- 输入框：宠物正上方 ---------- */
+/* ---------- 输入框：去边框、磨砂、淡入淡出 ---------- */
 .chat-input {
   position: absolute;
   left: 50%;
   bottom: 236px;
   transform: translateX(-50%);
   width: 260px;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(30, 30, 30, 0.55);
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 18px;
+  /* 去掉硬边框，改用非常柔和的阴影 + 半透明背景 */
+  border: none;
+  background: rgba(40, 40, 40, 0.65);
   color: #fff;
-  font: 13px/32px system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 14px/36px system-ui, -apple-system, "Segoe UI", sans-serif;
   outline: none;
-  backdrop-filter: blur(6px);
-  transition: background 0.15s ease;
-}
-
-.chat-input:focus {
-  background: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 1;
 }
 
 .chat-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 隐藏状态 */
+.chat-input.hidden {
+  opacity: 0;
+  pointer-events: none; /* 隐藏时不可点击 */
+  transform: translateX(-50%) translateY(10px);
 }
 
 /* ---------- 气泡 ---------- */
@@ -125,7 +92,7 @@ body {
   max-width: 280px;
   padding: 10px 14px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   color: #1f1f1f;
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
@@ -153,4 +120,11 @@ body {
   background: inherit;
   transform: translateX(-50%) rotate(45deg);
   border-radius: 2px;
+}
+
+body.click-through,
+body.click-through * {
+  cursor: default !important;
+  /* 穿透时禁用页面的指针事件，彻底把鼠标交给底层 */
+  pointer-events: none !important;
 }
